@@ -3,6 +3,26 @@
 
 {% block content %}
 
-    <h1>file upload</h1>
-
+    <p>
+        From your exported data locate the 'Daily Summaries.csv' file that should be 
+        located in your 'Daily Aggregations' folder.
+    </p>
+    
+        <div class="input-group"> 
+            <div class="input-group-prepend">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <button type="submit" class="input-group-text" id="inputGroupFileAddon01">Upload
+                    </button>
+                
+            </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                    aria-describedby="inputGroupFileAddon01" name="csv_file">
+                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            
+               
+            </div>
+        </div>
+    </form>
 {% endblock %}

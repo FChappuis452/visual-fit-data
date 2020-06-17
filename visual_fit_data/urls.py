@@ -16,11 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
+from . import views
 
 urlpatterns = [
-
-    url(r'^', include('file_upload.urls')),
+    url(r'^$', views.home, name='home'),
+    url(r'^upload/', include('file_upload.urls'), name='upload'),
     url(r'^admin/', admin.site.urls),
 ]
 

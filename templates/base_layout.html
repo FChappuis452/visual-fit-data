@@ -2,20 +2,89 @@
 
 
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>
+<html lang="en">
 
-        </title>
-        <link rel="stylesheet" href="{% static 'styles.css' %}">
-    </head>
-    <body>
-        <div class="container">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Visual Fit Data</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
 
-            {% block content %}
-            {% endblock %}
+<body>
 
-        </div>
+  <!--Main Navigation-->
+  <header>
 
-    </body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark green scrolling-navbar">
+      <a class="navbar-brand" href="{% url 'home' %}"><strong>Home</strong></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'upload' %}">Upload File</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav nav-flex-icons">
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/FChappuis452"><i class="fab fa-github"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.linkedin.com/in/fredericchappuis/"><i class="fab fa-linkedin"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+  </header>
+  <!--Main Navigation-->
+
+  <!-- Start your project here-->
+  <main>
+    <div class="container">
+      <div class="row mt-5 pt-5">
+        {% block content %}
+        f
+        {% endblock %}
+      </div>
+      
+    </div>
+  </main>
+  <!-- /Start your project here-->
+
+
+
+  <!-- Footer -->
+  <footer class="page-footer font-small dark green">
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+      <a href="mailto:fchappuis452@gmail.com?subject=I want to discuss Visual Fit Data"> Contact Me</a>
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+<!-- Footer -->
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+</body>
+
 </html>
