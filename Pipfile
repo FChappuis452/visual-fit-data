@@ -8,8 +8,10 @@ verify_ssl = true
 [packages]
 django = "3.0.7"
 dj-database-url = "*"
+django-allauth = "*"
 psycopg2-binary = "*"
 gunicorn = "*"
+
 
 [requires]
 python_version = "3.8"
