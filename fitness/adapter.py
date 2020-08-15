@@ -7,3 +7,7 @@ class RedirectAccountAdapter(DefaultAccountAdapter):
     def get_login_redirect_url(self, request):
         path = "/fitness"
         return path
+
+    def get_logout_redirect_url(self, request):
+        path = "/"
+        return path

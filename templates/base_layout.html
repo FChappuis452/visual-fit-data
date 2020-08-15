@@ -24,35 +24,39 @@
   <!--Main Navigation-->
   <header>
 
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark green scrolling-navbar">
-      <a class="navbar-brand" href="{% url 'home' %}">
-        <strong>Home</strong>
-      </a>
-      <a class="navbar-brand" href="{% url 'fitness' %}">
-        Fitness Data
-      </a>
-      <button class="navbar-toggler" 
-              type="button" 
-              data-toggle="collapse" 
-              data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" 
-              aria-expanded="false" 
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      
-        <ul class="navbar-nav nav-flex-icons">
+   <!--Navbar -->
+  <nav class="mb-1 navbar navbar-expand-lg navbar-dark green">
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
+      aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'fitness' %}">Fitness Data</a>
+        </li>  
+      </ul>
+      <ul class="navbar-nav ml-auto nav-flex-icons">
+        {% if user.is_active %}
           <li class="nav-item">
-            <a class="nav-link" href="https://github.com/FChappuis452"><i class="fab fa-github"></i></a>
+              <a class="nav-link" href="{%url 'account_logout' %}">Sign Out</a>
           </li>
+        {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="https://www.linkedin.com/in/fredericchappuis/"><i class="fab fa-linkedin"></i></a>
+            <a class="nav-link" href="{%url 'account_login' %}">Sign In</a>
           </li>
-        </ul>
-      </div>
-    </nav>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+<!--/.Navbar --> 
+      
+      
+   
 
   </header>
   <!--Main Navigation-->
@@ -74,15 +78,16 @@
 
   <!-- Footer -->
   <footer class="page-footer font-small dark green">
-
-    <!-- Copyright -->
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
       <a href="mailto:fchappuis452@gmail.com?subject=I want to discuss Visual Fit Data"> Contact Me</a>
+      <a class="git-ic" href="https://github.com/FChappuis452"><i class="fab fa-github"></i></a>
+      <a class="li-ic" href="https://www.linkedin.com/in/fredericchappuis/"><i class="fab fa-linkedin"></i></a>
     </div>
-    <!-- Copyright -->
 
   </footer>
 <!-- Footer -->
+
+
   <!-- SCRIPTS -->
   <!-- JQuery -->
   <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
