@@ -151,3 +151,16 @@ DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True
 
 #ALL Auth Adapter Redirect
 ACCOUNT_ADAPTER = 'fitness.adapter.RedirectAccountAdapter'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+            'https://www.googleapis.com/auth/fitness.activity.read'
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'offline',
+        }
+    }
+}

@@ -20,7 +20,6 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
-    # url(r'^upload/', include('file_upload.urls'), name='upload'),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^fitness/', include('fitness.urls')),
