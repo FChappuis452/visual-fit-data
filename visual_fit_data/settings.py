@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'fitness',
+    
 ]
 
 SITE_ID = 1
@@ -164,3 +165,4 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+

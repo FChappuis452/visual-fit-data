@@ -17,6 +17,11 @@
   <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  {% block extraScripts %}
+  
+  {% endblock extraScripts %}
+  
 </head>
 
 <body>
@@ -64,12 +69,11 @@
   <!-- Start your project here-->
   <main>
     <div class="container">
-      <div class="row mt-5 pt-5">
-        {% block content %}
-        
-        {% endblock %}
-      </div>
+    
+      {% block content %}
       
+      {% endblock %}
+    
     </div>
   </main>
   <!-- /Start your project here-->
@@ -89,6 +93,7 @@
 
 
   <!-- SCRIPTS -->
+  
   <!-- JQuery -->
   <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
   <!-- Bootstrap tooltips -->
@@ -97,6 +102,7 @@
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+  
 </body>
 
 </html>
