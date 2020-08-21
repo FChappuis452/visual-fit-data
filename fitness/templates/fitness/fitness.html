@@ -3,15 +3,37 @@
 
 
 {% block content %}
+
+    <form action="{% url 'fitness' %}" method="GET">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-1 p-0">
+                <label for="startDate">Start Date: </label>
+            </div>
+            <div class="col-2 p-0">
+                <input id="startDate" name="startDate" width="250"/>  
+            </div>
+            <div class="col-1 pl-2">
+                <label for="endDate">End Date: </label>        
+            </div>
+            <div class="col-2 p-0">
+                <input id="endDate" name="endDate" width="250" />        
+            </div>
+            <div class="col p-0">
+                <button type="submit" class="btn btn-sm" name="getData">Get Data</button>
+                <button type="submit" class="btn btn-sm" name="fourWeeks">4 Weeks</button>
+                <button type="submit" class="btn btn-sm" name="threeMonth">3 Months</button>
+                <button type="submit" class="btn btn-sm" name="sixMonth">6 Months</button>
+                <button type="submit" class="btn btn-sm" name="twelveMonth">12 Months</button>
+            </div>
+        </div>
+
+    </form>
     
-
-    <input id="startDate" width="276" />
-    <input id="endDate" width="276" />
     <script>
-        $('#startDate').datepicker();
-        $('#endDate').datepicker();
+        $('#startDate').datepicker({ format: 'ddd mmm d, yyyy'});
+        $('#endDate').datepicker({ format: 'ddd mmm d, yyyy'});
     </script>
-
 
     {{ fitdata }}
     <br /><br /><br />

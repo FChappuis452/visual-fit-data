@@ -11,9 +11,11 @@ from .api import ApiCalls
 
 @login_required()
 def fitness_home(request):
+    if request.method == 'GET':
+        r = request.GET
 
     api = ApiCalls(request)
-    r= api.refresh_token(request)
+    api.refresh_token(request)
         
     reply = api.test_call()    
 
