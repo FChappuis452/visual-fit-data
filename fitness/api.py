@@ -29,6 +29,7 @@ import os
 import requests
 
 from allauth.socialaccount.models import SocialToken
+from .date_converter import DateConverter
 
 class ApiCalls():
 
@@ -37,7 +38,11 @@ class ApiCalls():
         self.token_secret = self.access_token.token_secret
     
 
-    def test_call(self):
+    def get_data(self, startTime, endTime):
+        converter = DateConverter()
+        start = converter.convert_to_milliseconds(startTime)
+        end = converter.convert_to_milliseconds(endTime)
+
         url = "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate"
         headers = {
             'Content-type' : 'application/json',
@@ -47,8 +52,8 @@ class ApiCalls():
         body = {
             'aggregateBy' : [{'dataSourceId' : 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps'}],
             "bucketByTime" : { "durationMillis" : 86400000 },
-            "startTimeMillis" : 1593921600000,
-            "endTimeMillis" : 1594094399000
+            "startTimeMillis" : start,
+            "endTimeMillis" : end
         }
 
         response = requests.post(url, json=body, headers=headers)

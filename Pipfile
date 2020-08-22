@@ -12,6 +12,7 @@ django-allauth = "*"
 psycopg2-binary = "*"
 gunicorn = "*"
 requests = "*"
+python_dateutil = "*"
 
 
 [requires]
