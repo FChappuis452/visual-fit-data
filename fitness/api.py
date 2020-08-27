@@ -43,6 +43,10 @@ class ApiCalls():
         start = converter.convert_to_milliseconds(startTime)
         end = converter.convert_to_milliseconds(endTime)
 
+        if start == end:
+            end = end + 86399000
+        
+
         url = "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate"
         headers = {
             'Content-type' : 'application/json',
@@ -57,7 +61,7 @@ class ApiCalls():
         }
 
         response = requests.post(url, json=body, headers=headers)
-        
+        print(response.json())
         return response.json()
 
 

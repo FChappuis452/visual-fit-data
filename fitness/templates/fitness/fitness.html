@@ -34,10 +34,14 @@
         $('#startDate').datepicker({ format: 'ddd mmm d, yyyy'});
         $('#endDate').datepicker({ format: 'ddd mmm d, yyyy'});
     </script>
-
-    {{ fitdata }}
+    <p>Dates: {{ d_count }}</p>
+    {{ dates }}
     <br /><br /><br />
-    {{ token }}
+    <p>Steps: {{ s_count }}</p>
+    {{ steps }}
+
+    <p>Date query: </p>
+    {{ date_query }}
    
 {% endblock content %}
 
