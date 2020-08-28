@@ -2,29 +2,6 @@
 This class will make the API queries and return the raw data to the view
 """
 
-
-"""
-access_token = SocialToken.objects.get(account__user=request.user, account__provider='google')
-    refresh_token(access_token)
-
-    url = "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate"
-    headers = {
-        'Content-type' : 'application/json',
-        'Authorization' : 'Bearer ' + str(access_token),
-    }
-    
-    body = {
-        'aggregateBy' : [{'dataSourceId' : 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps'}],
-        "bucketByTime" : { "durationMillis" : 86400000 },
-        "startTimeMillis" : 1593921600000,
-        "endTimeMillis" : 1594094399000
-    }
-
-    response = requests.post(url, json=body, headers=headers)
-    reply = response.json()
-    
-
-"""
 import os
 import requests
 
@@ -42,10 +19,12 @@ class ApiCalls():
         converter = DateConverter()
         start = converter.convert_to_milliseconds(startTime)
         end = converter.convert_to_milliseconds(endTime)
-
-        if start == end:
-            end = end + 86399000
+        print(start)
+        print(end)
+        # if start == end:
+        end = end + 86399000
         
+       
 
         url = "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate"
         headers = {
@@ -61,7 +40,7 @@ class ApiCalls():
         }
 
         response = requests.post(url, json=body, headers=headers)
-        print(response.json())
+        # print(response.json())
         return response.json()
 
 

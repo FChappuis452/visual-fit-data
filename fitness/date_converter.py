@@ -16,15 +16,16 @@ class DateConverter():
 
     def convert_to_milliseconds(self, date_to_convert):
         
-        if type(date_to_convert) is str:
-            converted_date = datetime.datetime.strptime(date_to_convert, '%a %b %d, %Y')
-        else:
-            converted_date = date_to_convert
-        milliseconds = converted_date.timestamp() * 1000
-        print (milliseconds)
-        print (math.trunc(milliseconds)) 
+        # if type(date_to_convert) is str:
+        #     converted_date = datetime.datetime.strptime(date_to_convert, '%a %b %d, %Y')
+        # else:
+        #     converted_date = date_to_convert
+        milliseconds = date_to_convert.timestamp() * 1000
         return math.trunc(milliseconds)
 
-    def convert_to_date(self, milliseconds):
-        dt_object = datetime.fromtimestamp(milliseconds)
+    def convert_to_date(self, milliseconds):       
+        milli = int(milliseconds)
+        milli = milli / 1000.0
+        dt_object = datetime.datetime.fromtimestamp(milli).strftime("%a %b %d, %Y")
         return dt_object
+        

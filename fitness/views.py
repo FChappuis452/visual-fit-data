@@ -1,9 +1,11 @@
 import os
 import requests
+import datetime as dt
 
 
 from allauth.socialaccount.models import SocialToken
 from .api import ApiCalls
+from .date_converter import DateConverter
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
@@ -15,63 +17,78 @@ INVALID_DATE = "Invalid date"
 
 @login_required()
 def fitness_home(request):
+    #Init API 
     api = ApiCalls(request)
     api.refresh_token(request)
+    
     reply = ""
-    dates = ""
-    steps = 0
-    date_count = 0
-    step_count = 0
-    m = "not assigned"
+    # Init the django fields
+    fields = {
+        'dates' : "",
+        'steps' : "",
+        'date_count' : "",
+        'step_count' : "",
+    }
+    
+    endDate = datetime.now().replace(hour=0, minute=0, second=0)
+    
     if request.method == 'POST':
         form = request.POST
-        today = datetime.now()
         # always hate that python does not have switch statements
-        if 'getData' in form:
-            if form['startDate'] == '' or form['endDate'] == '':
-                reply = INVALID_DATE
-            else:    
-                reply = api.get_data(form['startDate'], form['endDate'])
-                # reply = json_extract(reply, 'intVal')
-            
-            m = f"{form['startDate']} {form['endDate']}'"
-            
-        elif 'fourWeeks' in form:
-            endDate = today - timedelta(weeks=4)
-            reply = api.get_data(endDate, today)
-            m = f"{today}, {endDate}"
-        elif 'threeMonth' in form:
-            endDate = today + relativedelta(months=-3)
-            reply = api.get_data(endDate, today)
-            m = f"{today}, {endDate}"
-        elif 'sixMonth' in form:
-            endDate = today + relativedelta(months=-6)
-            reply = api.get_data(endDate, today)
-            m = f"{today}, {endDate}"
-        elif 'twelveMonth' in form:
-            endDate = today + relativedelta(months=-12)
-            reply = api.get_data(endDate, today)
-            m = f"{today}, {endDate}"
-        else:
-            reply = INVALID_DATE
-    else:
-        m = "else clause"
+        if 'getData' in form:   
+            startDate = form['startDate']
+            endDate = form['endDate']
 
-    if reply != "" and reply != INVALID_DATE:
-        dates = json_extract(reply, 'startTimeMillis')
-        steps = json_extract(reply, 'intVal')
-        date_count = len(dates)
-        step_count = len(steps)
+            if startDate == "":
+                startDate = dt.datetime.now().replace(hour=0, minute=0, second=0)
+            if endDate == "":
+                endDate = dt.datetime.now().replace(hour=0, minute=0, second=0)
+
+        elif 'fourWeeks' in form:
+            startDate = endDate - timedelta(weeks=4)
+            
+        elif 'threeMonth' in form:
+            startDate = endDate + relativedelta(months=-3)
+            
+        elif 'sixMonth' in form:
+            startDate = endDate + relativedelta(months=-6)
+            
+        elif 'twelveMonth' in form:
+            startDate = endDate + relativedelta(months=-12)
+            
+    else:
+        startDate = endDate
+
+   
+    if type(startDate) is str:
+        startDate = dt.datetime.strptime(startDate, '%a %b %d, %Y')
+        
+    if type(endDate) is str:
+        endDate = dt.datetime.strptime(endDate, '%a %b %d, %Y')
+        
+    reply = api.get_data(startDate, endDate)            
+
+    fields['dates'] = json_extract(reply, 'startTimeMillis')
+    fields['steps'] = json_extract(reply, 'intVal')
+    print(f"<<<<<<<<<<<<<<<<<FIELD STEP>>>>>>>>>>>>>>\n{reply})")
+    print("<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>")
+    fields['date_count'] = len(fields["dates"])
+    fields['step_count'] = len(fields["steps"])
+
+    #convert dates
+    converter = DateConverter()
+    for idx, milli_date in enumerate(fields['dates']):
+        fields['dates'][idx] = converter.convert_to_date(milli_date)
     
     
        
 
     return render(request, 'fitness/fitness.html',{
-        'dates' : dates,
-        'steps' : steps,
-        'd_count' : date_count,
-        's_count' : step_count,
-        'date_query' : m
+        'dates' : fields["dates"],
+        'steps' : fields["steps"],
+        'd_count' : fields["date_count"],
+        's_count' : fields["step_count"],
+        
     })
 
 # def refresh_token(token):
