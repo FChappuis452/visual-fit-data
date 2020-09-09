@@ -19,9 +19,6 @@ class ApiCalls():
         converter = DateConverter()
         start = converter.convert_to_milliseconds(startTime)
         end = converter.convert_to_milliseconds(endTime)
-        print(start)
-        print(end)
-        # if start == end:
         end = end + 86399000
         
        

@@ -1,22 +1,27 @@
 """Extract nested values from a JSON tree."""
-"""Taken from https://hackersandslackers.com/extract-data-from-complex-json-python/ """
 
-def json_extract(obj, key):
-    """Recursively fetch values from nested JSON."""
-    arr = []
 
-    def extract(obj, arr, key):
-        """Recursively search for values of key in JSON tree."""
-        if isinstance(obj, dict):
-            for k, v in obj.items():
-                if isinstance(v, (dict, list)):
-                    extract(v, arr, key)
-                elif k == key:
-                    arr.append(v)
-        elif isinstance(obj, list):
-            for item in obj:
-                extract(item, arr, key)
-        return arr
+def json_extract(json_data):
+    #fields['steps'] = json_extract(reply, 'intVal')
+    # print("<<<<<<<<<<<<<<<<<FIELD STEP>>>>>>>>>>>>>>")
+    # print(f"{reply['bucket'][0]['startTimeMillis']}")
+    # try:
+    #     print(f"{reply['bucket'][0]['dataset'][0]['point'][0]['value'][0]['intVal']}")
+    # except IndexError:
+    #     print("0")
+    # print(f"{reply['bucket'][1]['startTimeMillis']}")
+    # print(f"{reply['bucket'][1]['dataset'][0]['point'][0]['value'][0]['intVal']}")
 
-    values = extract(obj, arr, key)
-    return values
+    date_object = {
+        "dates" : [],
+        "fitness_data" : [],
+    }
+
+    for idx, bucket in enumerate(json_data['bucket']):
+        date_object['dates'].append(json_data['bucket'][idx]['startTimeMillis'])
+        try:
+            date_object['fitness_data'].append(json_data['bucket'][idx]['dataset'][0]['point'][0]['value'][0]['intVal'])
+        except IndexError:
+            date_object['fitness_data'].append(0)
+
+    return date_object

@@ -25,9 +25,9 @@ def fitness_home(request):
     # Init the django fields
     fields = {
         'dates' : "",
-        'steps' : "",
+        'fitness_info' : "",
         'date_count' : "",
-        'step_count' : "",
+        'fitness_count' : "",
     }
     
     endDate = datetime.now().replace(hour=0, minute=0, second=0)
@@ -68,12 +68,11 @@ def fitness_home(request):
         
     reply = api.get_data(startDate, endDate)            
 
-    fields['dates'] = json_extract(reply, 'startTimeMillis')
-    fields['steps'] = json_extract(reply, 'intVal')
-    print(f"<<<<<<<<<<<<<<<<<FIELD STEP>>>>>>>>>>>>>>\n{reply})")
-    print("<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>")
+    fields = json_extract(reply)
+    
+   
     fields['date_count'] = len(fields["dates"])
-    fields['step_count'] = len(fields["steps"])
+    fields['fitness_count'] = len(fields["fitness_data"])
 
     #convert dates
     converter = DateConverter()
@@ -85,9 +84,9 @@ def fitness_home(request):
 
     return render(request, 'fitness/fitness.html',{
         'dates' : fields["dates"],
-        'steps' : fields["steps"],
+        'steps' : fields["fitness_data"],
         'd_count' : fields["date_count"],
-        's_count' : fields["step_count"],
+        's_count' : fields["fitness_count"],
         
     })
 
