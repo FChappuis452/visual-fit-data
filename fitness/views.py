@@ -93,8 +93,7 @@ def fitness_home(request):
     fields['fitness_avg'] = fields['fitness_total'] / fields['fitness_count']
     zippy = zip(fields['dates'], fields['fitness_data']) #combine the two lists
     zippy = list(zippy)
-    for i,j in zippy:
-        print(i,j)
+   
 
     return render(request, 'fitness/fitness.html',{
         "zipped_data" : zippy,
