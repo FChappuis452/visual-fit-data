@@ -2,5 +2,67 @@
 
 
 {% block content %}
-    <h1>home</h1>
+<style>
+
+  .hm-gradient {
+    background: linear-gradient(40deg, rgba(0,199,10,.3), rgba(67,160,4,.3));
+  }
+  .heading {
+    margin: 0 6rem;
+    font-size: 3.8rem;
+    font-weight: 700;
+    color: #43a047;
+  }
+  .subheading {
+    margin: 2.5rem 6rem;
+    color: #b2c0bd;
+  }
+  .btn.btn-margin {
+    margin-left: 6rem;
+    margin-top: 3rem;
+  }
+ 
+  .title {
+    margin-top: 6rem;
+    margin-bottom: 2rem;
+    color: #43a047;
+  }
+  .subtitle {
+    color: #bcb2c0;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-bottom: 6rem;
+  }
+
+</style>
+
+<section class="view">
+
+    <div class="row">
+
+      <div class="col-md-6">
+
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+          <h1 class="heading">Visual Fit Data</h1>
+          <h4 class="subheading font-weight-bold">Visualize your Google Fit metrics in a 
+              better way
+          </h4>
+          
+        </div>
+
+      </div>
+
+      <div class="col-md-6">
+
+        <div class="view">
+          <img src="https://lh3.googleusercontent.com/jArSD-kxOa2llPXvqrjRcEJdL4XhjP8-WqEfg9UAlYF8v0qzXAZ0EI5k96l0pf3tDNg=s360" class="img-fluid" alt="Google Fit Icon">
+          <div class="mask flex-center">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
 {% endblock %}

@@ -33,7 +33,7 @@
   <header>
 
     <!--Navbar -->
-    <nav class="mb-1 navbar navbar-expand-lg navbar-dark green">
+    <nav id="top_nav" class="mb-1 navbar navbar-expand-lg navbar-dark green">
       
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
         aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,7 @@
             <a class="nav-link" href="{% url 'home' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'fitness' %}">Fitness Data</a>
+            <a class="nav-link" href="{% url 'fitness' %}">Steps</a>
           </li>  
         </ul>
         <ul class="navbar-nav ml-auto nav-flex-icons">
@@ -68,30 +68,27 @@
 
   <!-- Start your project here-->
   <!-- <main> -->
-  <div class="container-fluid">
-    
-    {% block content %}
-    
-    {% endblock %}
-    
+  <div id="main_content" class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>  
+    <div class="row">
+      <!-- Footer -->
+      <footer id="footer" class="page-footer font-small green w-100">
+        <div class="text-center py-3">© 2020 Copyright:
+          <a href="mailto:fchappuis452@gmail.com?subject=I want to discuss Visual Fit Data"> Contact Me</a>
+          <a class="git-ic" href="https://github.com/FChappuis452"><i class="fab fa-github"></i></a>
+          <a class="li-ic" href="https://www.linkedin.com/in/fredericchappuis/"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </footer>
+      <!-- Footer -->
+    </div>
   </div>
   <!-- </main> -->
   
-
-
-
-  <!-- Footer -->
-  <footer class="page-footer font-small green fixed-bottom">
-    <div class="text-center py-3">© 2020 Copyright:
-      <a href="mailto:fchappuis452@gmail.com?subject=I want to discuss Visual Fit Data"> Contact Me</a>
-      <a class="git-ic" href="https://github.com/FChappuis452"><i class="fab fa-github"></i></a>
-      <a class="li-ic" href="https://www.linkedin.com/in/fredericchappuis/"><i class="fab fa-linkedin"></i></a>
-    </div>
-
-  </footer>
-  <!-- Footer -->
-
-
    <!-- SCRIPTS -->
   
   <!-- JQuery -->
@@ -102,6 +99,16 @@
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+  <script>
+    var window_height = window.screen.height;
+    var nav = document.getElementById("top_nav").offsetHeight;
+    var content = document.getElementById("main_content").offsetHeight;
+    var total = nav + content;
+    if (total < window_height)
+    {
+      document.getElementById('footer').classList.add("fixed-bottom");
+    }
+  </script>
 </body>
 
 </html>

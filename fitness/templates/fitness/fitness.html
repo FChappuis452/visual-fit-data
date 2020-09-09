@@ -1,5 +1,5 @@
 {% extends 'base_layout.html' %}
-
+{% load humanize %}
 
 
 {% block content %}
@@ -7,25 +7,25 @@
         <div class="col">
             <form action="{% url 'fitness' %}" method="POST">
                 {% csrf_token %}
-                <div class="row">
-                    <div class="col-1 p-0">
+                <div class="row w-auto">
+                    <div class="col-1 p-1">
                         <label for="startDate">Start Date: </label>
                     </div>
-                    <div class="col-2 p-0">
+                    <div class="col p-1">
                         <input id="startDate" name="startDate" width="250"/>  
                     </div>
-                    <div class="col-1 pl-2">
+                    <div class="col-1 p-1">
                         <label for="endDate">End Date: </label>        
                     </div>
-                    <div class="col-2 p-0">
+                    <div class="col p-1">
                         <input id="endDate" name="endDate" width="250" />        
                     </div>
-                    <div class="col p-0">
+                    <div class="col-4 p-0">
                         <button type="submit" class="btn btn-sm" name="getData" value="1">Get Data</button>
-                        <button type="submit" class="btn btn-sm" name="fourWeeks" value="1">4 Weeks</button>
-                        <button type="submit" class="btn btn-sm" name="threeMonth" value="1">3 Months</button>
-                        <button type="submit" class="btn btn-sm" name="sixMonth" value="1">6 Months</button>
-                        <button type="submit" class="btn btn-sm" name="twelveMonth" value="1">12 Months</button>
+                        <button type="submit" class="btn btn-sm" name="thirtyDays" value="1">30 Days</button>
+                        <button type="submit" class="btn btn-sm" name="sixtyDays" value="1">60 Days</button>
+                        <button type="submit" class="btn btn-sm" name="ninetyDays" value="1">90 Days</button>
+                        
                     </div>
                 </div>        
             </form>
@@ -40,22 +40,52 @@
     </script>
 
     <div class="row">
-        <div class="col-2">
-            <p>Dates: {{ d_count|default:"Select date above" }}</p>
-            {% for dat in dates|default:"" %}
-                <p>{{ dat }}</p>
-            {% endfor %}
+        <div class="col-6">
+            <table class="table table-striped w-100">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Steps</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d, s in zipped_data %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ d }}</td>
+                            <td>{{ s|intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <div class="col-3">
-            <p>Steps: {{ s_count|default:"" }}</p>
-            {% for step in steps|default:"" %}
-                <p>{{ step }}</p>
-            {% endfor%}
+        <div class="col">
+            <table class="table table-bordered w-auto">
+                <thead>
+                    <tr>
+                        <th scope="col">Total Days</th>
+                        <th scope="col">Total Steps</th>
+                        <th scope="col">Average Steps</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <th scope="row">{{ d_count }}</th>
+                            <td>{{ total_count|intcomma }}</td>
+                            <td>
+                                {% with avg=average|floatformat:3 %}
+                                {{ avg|intcomma }}
+                                {% endwith %}
+                            </td>
+                            
+                        </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <br /><br /><br />
-   
- 
+
+
 
 {% endblock content %}
 
