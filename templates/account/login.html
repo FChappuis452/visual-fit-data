@@ -1,0 +1,26 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+<div class="d-flex">
+  <div class="p-2 flex-fill align-self-center">
+  <h1>{% trans "Sign In" %}</h1>
+  {% get_providers as socialaccount_providers %}
+  
+  <p>{% blocktrans with site.name as site_name %}Please sign in with one
+  of your existing third party accounts.{% endblocktrans %}</p>
+
+    <ul class="socialaccount_providers list-group list-group-flush">
+      {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+    </ul>
+
+  {% include "socialaccount/snippets/login_extra.html" %}
+  </div>
+</div>
+
+{% endblock %}
