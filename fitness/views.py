@@ -25,11 +25,12 @@ def fitness_home(request):
     # Init the django fields
     fields = {
         'dates' : "",
-        'fitness_info' : "",
+        'fitness_data' : "",
         'date_count' : "",
         'fitness_count' : "",
         'fitness_total' : "",
         'fitness_avg' : "",
+        'error' : [],
     }
     
     endDate = datetime.now().replace(hour=23, minute=59, second=59)
@@ -75,9 +76,14 @@ def fitness_home(request):
     if (delta.days) >= 90:
         endDate = startDate + timedelta(days=89)
         
-    reply = api.get_data(startDate, endDate)            
+    reply = api.get_data(startDate, endDate)     
 
-    fields = json_extract(reply)
+    # error check
+    if reply.get("error"):
+        fields['error'].append("API Error Token expired, sign out and back in again")
+    else:
+        fields = json_extract(reply)
+        fields['error'] = ""
     
    
     
@@ -90,7 +96,10 @@ def fitness_home(request):
     fields['date_count'] = len(fields["dates"])
     fields['fitness_count'] = len(fields["fitness_data"])
     fields['fitness_total'] = sum(fields['fitness_data'])
-    fields['fitness_avg'] = fields['fitness_total'] / fields['fitness_count']
+    try:
+        fields['fitness_avg'] = fields['fitness_total'] / fields['fitness_count']
+    except:
+        fields['fitness_avg'] = 0
     zippy = zip(fields['dates'], fields['fitness_data']) #combine the two lists
     zippy = list(zippy)
    
@@ -100,8 +109,8 @@ def fitness_home(request):
         'd_count' : fields["date_count"],
         's_count' : fields["fitness_count"],
         'total_count' : fields["fitness_total"],
-        'average' : fields["fitness_avg"]
-        
+        'average' : fields["fitness_avg"],
+        'error' : fields["error"],
     })
 
 

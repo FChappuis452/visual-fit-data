@@ -37,7 +37,7 @@ class ApiCalls():
         }
 
         response = requests.post(url, json=body, headers=headers)
-        # print(response.json())
+        print(response.json())
         return response.json()
 
 

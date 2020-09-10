@@ -1,5 +1,5 @@
 # visual-fit-data
-In this project I will use the Django framework, and google's Fitness API to help visualize Google Fit data.
+In this project I will use the Django framework, and google's Fitness API to help visualize Google Fit data. Currently this project is best viewed in a browser window
 
 It will feature having to login into google to authenticate yourself and then it will pull the data from the API.  
 
