@@ -16,7 +16,7 @@ INVALID_DATE = "Invalid date"
 
 
 @login_required()
-def fitness_home(request):
+def steps_home(request):
     #Init API 
     api = ApiCalls(request)
     api.refresh_token(request)
@@ -104,7 +104,7 @@ def fitness_home(request):
     zippy = list(zippy)
    
 
-    return render(request, 'fitness/fitness.html',{
+    return render(request, 'fitness/steps.html',{
         "zipped_data" : zippy,
         'd_count' : fields["date_count"],
         's_count' : fields["fitness_count"],

@@ -1,5 +1,5 @@
 {% extends 'base_layout.html' %}
-
+{% load static %}
 
 {% block content %}
 <style>
@@ -60,11 +60,11 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="d-flex flex-column justify-content-center align-items-center h-100">
-                <p>
-                Google fit is available in both the <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness&hl=en_CA">Play Store</a> and 
-                <a href="https://apps.apple.com/us/app/google-fit-activity-tracker/id1433864494">Apple App Store</a>.
-                </p>
+            <div class="d-flex flex-row justify-content-center align-items-center h-100">
+             
+                <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness&hl=en_CA"><img src="{% static 'img/google-play-badge.png' %}" width="130" height="60"> </a> 
+                <a href="https://apps.apple.com/us/app/google-fit-activity-tracker/id1433864494"><img src="{% static 'img/app_store.svg' %}"></a>.
+             
             </div>
         </div>
     </div>
