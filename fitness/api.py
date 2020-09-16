@@ -10,12 +10,14 @@ from .date_converter import DateConverter
 
 class ApiCalls():
 
-    def __init__(self, request):
-        self.access_token = SocialToken.objects.get(account__user=request.user, account__provider='google')
+    # def __init__(self, request):
+    #     self.access_token = SocialToken.objects.get(account__user=request.user, account__provider='google')
+    #     self.token_secret = self.access_token.token_secret
+    def __init__(self, user):
+        self.access_token = SocialToken.objects.get(account__user=user, account__provider='google')
         self.token_secret = self.access_token.token_secret
-    
 
-    def get_data(self, startTime, endTime):
+    def get_data(self, dataSourceId, startTime, endTime):
         converter = DateConverter()
         start = converter.convert_to_milliseconds(startTime)
         end = converter.convert_to_milliseconds(endTime)
@@ -24,26 +26,29 @@ class ApiCalls():
        
 
         url = "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate"
+        
         headers = {
             'Content-type' : 'application/json',
             'Authorization' : 'Bearer ' + str(self.access_token),
         }
         
+        # 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps'
+        # derived:com.google.calories.expended:com.google.android.gms:merge_calories_expended
         body = {
-            'aggregateBy' : [{'dataSourceId' : 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps'}],
+            'aggregateBy' : [{'dataSourceId' : dataSourceId }],
             "bucketByTime" : { "durationMillis" : 86400000 },
             "startTimeMillis" : start,
             "endTimeMillis" : end
         }
 
         response = requests.post(url, json=body, headers=headers)
-        print(response.json())
+        
         return response.json()
 
 
     
     
-    def refresh_token(self, request):
+    def refresh_token(self):
         client_secret = os.environ['CLIENT_SECRET']
         client_id = os.environ['CLIENT_ID']
         url = 'https://oauth2.googleapis.com/token'

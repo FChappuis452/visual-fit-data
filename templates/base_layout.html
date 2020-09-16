@@ -47,6 +47,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'steps' %}">Steps</a>
           </li>  
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'calories' %}">Calories</a>
+          </li> 
         </ul>
         <ul class="navbar-nav ml-auto nav-flex-icons">
           {% if user.is_active %}
@@ -72,6 +75,7 @@
     <div class="row">
       <div class="col-12">
         {% block content %}
+         
         {% endblock %}
       </div>
     </div>  

@@ -1,0 +1,131 @@
+{% extends 'base_layout.html' %}
+
+
+{% load humanize %}
+
+
+
+{% block content %}
+    <script>
+        var path = window.location.pathname;
+        var page = path.split('/').join('');
+        page = "./fitness/" + page + ".html";
+        document.getElementById('the_form').action = page;
+    </script>
+    <div class="d-flex flex-row">
+        <div class="d-flex flex-column">   
+            <form id="the_form" action="" method="POST">
+                {% csrf_token %}
+                <div class="flex-column">
+                    <label for="startDate">Start Date: </label>
+                    <input id="startDate" name="startDate" />
+                </div>
+            
+                <div class="flex-column">
+                    <label for="endDate">End Date: </label>
+                    <input id="endDate" name="endDate" />
+                </div>
+                
+                <div class="flex-column">
+                    <button type="submit" class="btn btn-sm" name="getData" value="1">Get Data</button>
+                    <button type="submit" class="btn btn-sm" name="thirtyDays" value="1">30 Days</button>
+                    <button type="submit" class="btn btn-sm" name="sixtyDays" value="1">60 Days</button>
+                    <button type="submit" class="btn btn-sm" name="ninetyDays" value="1">90 Days</button>
+                </div>  
+                <input type="hidden" value="{{ action }}">          
+            </form>
+        </div>
+    </div> <!-- end row -->
+
+        
+    <script>
+        $('#startDate').datepicker({ format: 'ddd mmm d, yyyy'});
+        $('#endDate').datepicker({ format: 'ddd mmm d, yyyy'});
+    </script>
+        {% for e in error|default:"" %}
+            <div class="row m-2">
+                <p class="rounded danger-color-dark white-text p-2">{{ e }}</p>
+            </div>
+        {% endfor %}
+        
+    
+    <div class="row">
+        <div class="col-6">
+            <table class="table table-striped w-100">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Steps</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d, s in zipped_data %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ d }}</td>
+                            <td>
+                                {% with stp=s|floatformat:3 %}
+                                {{ stp|intcomma }}
+                                {% endwith %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <table class="table w-auto">
+                <thead>
+                    <tr>
+                        <th scope="col">Total Days</th>
+                        <th scope="col">Total {{ total }}</th>
+                        <th scope="col">Average {{ avgTitle }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <th scope="row">{{ d_count }}</th>
+                            <td>
+                                {% with tot_cnt=total_count|floatformat:3 %}
+                                {{ tot_cnt|intcomma }}
+                                {% endwith %}
+                            </td>
+                            <td>
+                                {% with avg=average|floatformat:3 %}
+                                {{ avg|intcomma }}
+                                {% endwith %}
+                            </td>
+                            
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- <script>
+        var path = "";
+        var page = ""; 
+        var action = "";
+        
+        path = window.location.pathname;
+        page = path.split('/').join('');
+        console.log(path);
+        console.log(page);
+        console.log(action);
+        action = page + ".html";
+        console.log(action);
+        document.getElementById('the_form').action = "";
+        document.getElementById('the_form').action = action;
+    </script> -->
+
+
+{% endblock content %}
+
+
+{% block extraScripts %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+{% endblock extraScripts %}
+

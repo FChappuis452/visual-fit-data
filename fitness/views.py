@@ -10,17 +10,73 @@ from datetime import date, datetime, timedelta
 from dateutil.parser import parse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.http import HttpResponse
 from .extract import *
 
 INVALID_DATE = "Invalid date"
 
+@login_required
+def steps(request):
+    path = 'fitness/steps.html'
+    if not request.POST:
+        return render(request, path)
+    else:
+        form = request.POST
+        user = request.user
+        fields = form_direct(form, user, "steps")
 
-@login_required()
-def steps_home(request):
-    #Init API 
-    api = ApiCalls(request)
-    api.refresh_token(request)
-    
+        zippy = zip(fields['dates'], fields['fitness_data']) #combine the two lists
+        zippy = list(zippy)
+        
+        return render(request, path,{
+            "zipped_data" : zippy,
+            'd_count' : fields["date_count"],
+            's_count' : fields["fitness_count"],
+            'total_count' : fields["fitness_total"],
+            'average' : fields["fitness_avg"],
+            'error' : fields["error"],   
+        })
+
+@login_required
+def calories(request):
+    path = 'fitness/calories.html'
+    if not request.POST:
+        return render(request, path)
+    else:
+        form = request.POST
+        user = request.user
+        fields = form_direct(form, user, "calories")
+        zippy = zip(fields['dates'], fields['fitness_data']) #combine the two lists
+        zippy = list(zippy)
+        
+        return render(request, path,{
+            "zipped_data" : zippy,
+            'd_count' : fields["date_count"],
+            's_count' : fields["fitness_count"],
+            'total_count' : fields["fitness_total"],
+            'average' : fields["fitness_avg"],
+            'error' : fields["error"],   
+        })
+
+
+def form_direct(form, user, page_render):
+    if page_render == "steps":
+        datasourceId = "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
+        fields = form_control(form, user, datasourceId, page_render)
+        return fields
+
+    elif page_render == "calories":
+        datasourceId = 'derived:com.google.calories.expended:com.google.android.gms:from_activities'
+        fields = form_control(form, user, datasourceId, page_render)
+        return fields
+
+
+
+def form_control(form, user, datasourceId, page):
+    #Init API
+    api = ApiCalls(user)
+    api.refresh_token()
+
     reply = ""
     # Init the django fields
     fields = {
@@ -30,35 +86,29 @@ def steps_home(request):
         'fitness_count' : "",
         'fitness_total' : "",
         'fitness_avg' : "",
-        'error' : [],
+        'error' : [],    
     }
-    
+
     endDate = datetime.now().replace(hour=23, minute=59, second=59)
-    
-    if request.method == 'POST':
-        form = request.POST
-        # always hate that python does not have switch statements
-        if 'getData' in form:   
+
+    if 'getData' in form:   
             # https://stackoverflow.com/questions/25341945/check-if-string-has-date-any-format
             
             startDate = is_date(form['startDate'])
             endDate = is_date(form['endDate'])
-
-            
-            
             if startDate == "":
                 startDate = dt.datetime.now().replace(hour=0, minute=0, second=0)
             if endDate == "":
                 endDate = dt.datetime.now().replace(hour=0, minute=0, second=0)
 
-        elif 'thirtyDays' in form:
-            startDate = endDate - timedelta(days=29)
-            
-        elif 'sixtyDays' in form:
-            startDate = endDate - timedelta(days=59)
-            
-        elif 'ninetyDays' in form:
-            startDate = endDate - timedelta(days=89)
+    elif 'thirtyDays' in form:
+        startDate = endDate - timedelta(days=29)
+        
+    elif 'sixtyDays' in form:
+        startDate = endDate - timedelta(days=59)
+        
+    elif 'ninetyDays' in form:
+        startDate = endDate - timedelta(days=89)
     else:
         startDate = endDate
 
@@ -76,16 +126,15 @@ def steps_home(request):
     if (delta.days) >= 90:
         endDate = startDate + timedelta(days=89)
         
-    reply = api.get_data(startDate, endDate)     
-
+    reply = api.get_data(datasourceId, startDate, endDate)     
+    
     # error check
     if reply.get("error"):
         fields['error'].append("API Error Token expired, sign out and back in again")
     else:
-        fields = json_extract(reply)
+        fields = json_extract(reply, page)
         fields['error'] = ""
-    
-   
+
     
     #convert dates
     converter = DateConverter()
@@ -100,18 +149,8 @@ def steps_home(request):
         fields['fitness_avg'] = fields['fitness_total'] / fields['fitness_count']
     except:
         fields['fitness_avg'] = 0
-    zippy = zip(fields['dates'], fields['fitness_data']) #combine the two lists
-    zippy = list(zippy)
-   
 
-    return render(request, 'fitness/steps.html',{
-        "zipped_data" : zippy,
-        'd_count' : fields["date_count"],
-        's_count' : fields["fitness_count"],
-        'total_count' : fields["fitness_total"],
-        'average' : fields["fitness_avg"],
-        'error' : fields["error"],
-    })
+    return fields
 
 
 
