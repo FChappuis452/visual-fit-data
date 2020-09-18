@@ -1,7 +1,15 @@
-"""Extract nested values from a JSON tree."""
-
 
 def json_extract(json_data, page):
+    """
+    Returns a dictionary of dates with its corresponding data
+    Depending on the API call the JSON will be laid out differently at key
+    position or missing if no activity was recorded for the time period so 
+    this brute force approach was used
+
+    :param json_data: JSON from the API to parse
+    :param page: str for the type of data being retrieved 
+    """
+    
     date_object = {
         "dates" : [],
         "fitness_data" : [],

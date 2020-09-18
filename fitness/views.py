@@ -13,10 +13,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .extract import *
 
-INVALID_DATE = "Invalid date"
 
 @login_required
 def steps(request):
+    """
+    Returns the rendering for the API calls mades for steps requests
+    """
+
     path = 'fitness/steps.html'
     if not request.POST:
         return render(request, path)
@@ -37,8 +40,15 @@ def steps(request):
             'error' : fields["error"],   
         })
 
+
+
+
 @login_required
 def calories(request):
+    """
+    Returns the rendering for the API calls mades for calorie requests
+    """
+
     path = 'fitness/calories.html'
     if not request.POST:
         return render(request, path)
@@ -59,7 +69,16 @@ def calories(request):
         })
 
 
+
+
 def form_direct(form, user, page_render):
+    """
+    Returns dictionary of formatted API data
+    :param form: POST data from the form request
+    :param user: The user that made the form request
+    :param page_render: str what type of data to retrieve
+    """
+
     if page_render == "steps":
         datasourceId = "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
         fields = form_control(form, user, datasourceId, page_render)
@@ -72,12 +91,22 @@ def form_direct(form, user, page_render):
 
 
 
+
 def form_control(form, user, datasourceId, page):
+    """
+    Return the dictionary after making the API call
+
+    :param form: The form data from request.POST
+    :param user: The user making the request
+    :param datasourceId: str The Id of the data to be retrieved
+    :param page: str the type of data being retrieved
+    """
     #Init API
     api = ApiCalls(user)
     api.refresh_token()
 
     reply = ""
+
     # Init the django fields
     fields = {
         'dates' : "",
@@ -91,9 +120,8 @@ def form_control(form, user, datasourceId, page):
 
     endDate = datetime.now().replace(hour=23, minute=59, second=59)
 
+    # Work through which button was pushed on the form
     if 'getData' in form:   
-            # https://stackoverflow.com/questions/25341945/check-if-string-has-date-any-format
-            
             startDate = is_date(form['startDate'])
             endDate = is_date(form['endDate'])
             if startDate == "":
@@ -158,6 +186,7 @@ def form_control(form, user, datasourceId, page):
 def is_date(string, fuzzy=False):
     """
     Return whether the string can be interpreted as a date.
+    https://stackoverflow.com/questions/25341945/check-if-string-has-date-any-format
 
     :param string: str, string to check for date
     :param fuzzy: bool, ignore unknown tokens in string if True
